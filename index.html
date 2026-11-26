@@ -4,45 +4,58 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GC 3D 탐구 — 기체 크로마토그래피 구성과 원리</title>
-<style>:root{--ink:#17202a;--muted:#5b6672;--line:#d9dee4;--accent:#1f6feb;--bg:#f3f4f2;--card:#fff}*{box-sizing:border-box}html,body{height:100%;color:var(--ink);background:var(--bg);margin:0;font-family:Noto Sans KR,Malgun Gothic,Apple SD Gothic Neo,system-ui,sans-serif}#app{grid-template-columns:minmax(0,1fr) 390px;height:100%;display:grid}#stage{min-height:0;position:relative}#stage canvas{touch-action:none;width:100%;height:100%;display:block}#toolbar{flex-wrap:wrap;align-items:center;gap:8px;display:flex;position:absolute;top:12px;left:12px}#toolbar button,#toolbar label{font:inherit;border:1px solid var(--line);background:var(--card);cursor:pointer;border-radius:8px;align-items:center;gap:6px;padding:8px 12px;font-size:14px;display:flex}#toolbar button.primary{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}#toolbar button[aria-pressed=true]{border-color:var(--accent);color:var(--accent);background:#e3edff}#toolbar input[type=range]{width:110px}#partcard{border:1px solid var(--line);background:#fffffff2;border-radius:10px;max-width:340px;padding:10px 14px;font-size:14px;display:none;position:absolute;bottom:12px;left:12px}#partcard b{margin-bottom:2px;font-size:16px;display:block}#hint{color:var(--muted);background:#fffc;border-radius:6px;padding:4px 8px;font-size:12px;position:absolute;bottom:12px;right:12px}#panel{background:var(--card);border-left:1px solid var(--line);flex-direction:column;min-height:0;display:flex}#panel header{border-bottom:1px solid var(--line);padding:12px 16px 8px}#panel header h1{margin:0 0 8px;font-size:17px}#steps{grid-template-columns:repeat(3,1fr);gap:6px;display:grid}#steps button{font:inherit;border:1px solid var(--line);cursor:pointer;background:#fff;border-radius:8px;padding:7px 4px;font-size:13px}#steps button[aria-current=true]{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}#body{flex:1;min-height:0;padding:14px 16px;overflow-y:auto}#body h2{margin:0 0 6px;font-size:18px;line-height:1.35}#body p.role{margin:0 0 10px;line-height:1.55}#body ul{margin:0 0 12px;padding-left:18px;font-size:14.5px;line-height:1.6}.question{background:#fff7e0;border:1px solid #f0d58a;border-radius:8px;margin:4px 0 12px;padding:9px 12px;font-size:14px}.question b{color:#8a6400;margin-bottom:2px;font-size:12px;display:block}#detbox{border-top:1px solid var(--line);margin-bottom:12px;padding-top:12px;display:none}#dettabs{grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;display:grid}#dettabs button{font:inherit;border:1px solid var(--line);cursor:pointer;background:#fff;border-radius:8px;padding:8px 0;font-weight:700}#dettabs button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}#detinfo{font-size:14px;line-height:1.55}#detinfo h3{margin:0 0 6px;font-size:16px}#detinfo dl{grid-template-columns:104px 1fr;gap:3px 8px;margin:0;display:grid}#detinfo dt{color:var(--muted)}#detinfo dd{margin:0}#detinfo .analogy{background:#eef4ff;border-radius:8px;margin-top:8px;padding:8px 10px}.charttitle{color:var(--muted);justify-content:space-between;margin:0 0 4px;font-size:13px;display:flex}canvas.chart{border:1px solid var(--line);background:#fbfcfd;border-radius:8px;width:100%;display:block}#legend{flex-wrap:wrap;gap:4px 12px;margin:6px 0 12px;font-size:12.5px;display:flex}#legend i{border-radius:50%;width:10px;height:10px;margin-right:4px;display:inline-block}#compare{display:none}#compare .row{cursor:pointer;grid-template-columns:44px 1fr;align-items:center;gap:6px;margin-bottom:4px;display:grid}#compare .row b{font-size:13px}#compare .row.on canvas{border-color:var(--ink);border-width:2px}footer{color:var(--muted);border-top:1px solid var(--line);padding:6px 16px 10px;font-size:11px}@media (width<=900px){#app{grid-template-rows:52vh 1fr;grid-template-columns:1fr}#panel{border-left:0;border-top:1px solid var(--line)}}</style>
-  <script type="module" crossorigin src="./assets/index-Qmdc_rAB.js"></script>
+<style>:root{--ink:#17202a;--muted:#56616d;--line:#17202a24;--accent:#1f6feb;--glass:#ffffffa8;--panel-w:380px}*{box-sizing:border-box}html,body{height:100%;color:var(--ink);background:#eef0ee;margin:0;font-family:Noto Sans KR,Malgun Gothic,Apple SD Gothic Neo,system-ui,sans-serif;overflow:hidden}#stage{position:fixed;inset:0}#stage canvas{touch-action:none;width:100%;height:100%;display:block}.glass{background:var(--glass);-webkit-backdrop-filter:blur(8px)saturate(1.2);backdrop-filter:blur(8px)saturate(1.2);border:1px solid #ffffffb3;box-shadow:0 6px 24px #17202a1f}button{font:inherit;cursor:pointer}#toolbar{z-index:3;flex-wrap:wrap;align-items:center;gap:8px;display:flex;position:fixed;top:12px;left:12px}#toolbar button,#toolbar label{color:var(--ink);border-radius:10px;align-items:center;gap:6px;padding:8px 12px;font-size:14px;display:flex}#toolbar button.primary{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}#toolbar button[aria-pressed=true]{border-color:var(--accent);color:var(--accent);background:#1f6feb29}#toolbar input[type=range]{width:100px}#panel{width:var(--panel-w);z-index:2;border-radius:16px;flex-direction:column;transition:transform .25s;display:flex;position:fixed;top:12px;bottom:12px;right:12px}#panel.closed{transform:translate(calc(100% + 12px))}#toggle{right:calc(var(--panel-w) + 20px);z-index:3;width:28px;height:64px;color:var(--ink);border-radius:10px;padding:0;font-size:14px;transition:right .25s;position:fixed;top:50%;translate:0 -50%}#panel.closed+#toggle{right:8px}#panel header{border-bottom:1px solid var(--line);padding:14px 16px 8px}#crumb{color:var(--accent);margin-bottom:2px;font-size:12.5px;font-weight:700}#panel h2{margin:0;font-size:18px;line-height:1.35}#body{flex:1;min-height:0;padding:12px 16px;overflow-y:auto}#body p.role{margin:0 0 10px;font-size:14.5px;line-height:1.55}#body ul{margin:0 0 12px;padding-left:18px;font-size:14px;line-height:1.6}.question{background:#fff7e0d9;border:1px solid #f0d58a;border-radius:10px;margin:4px 0;padding:9px 12px;font-size:14px}.question b{color:#8a6400;margin-bottom:2px;font-size:12px;display:block}.block{border-top:1px solid var(--line);margin-bottom:12px;padding-top:10px}.tabs{grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;display:grid}.tabs button{border:1px solid var(--line);background:#ffffffb3;border-radius:8px;padding:8px 0;font-weight:700}.tabs button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}#detinfo{font-size:13.5px;line-height:1.55}#detinfo h3{margin:0 0 6px;font-size:15.5px}#detinfo dl{grid-template-columns:100px 1fr;gap:3px 8px;margin:0;display:grid}#detinfo dt{color:var(--muted)}#detinfo dd{margin:0}#detinfo .analogy{background:#e2ecffcc;border-radius:8px;margin-top:8px;padding:8px 10px}.slider{grid-template-columns:96px 1fr 76px;align-items:center;gap:8px;margin-bottom:8px;font-size:14px;display:grid}.slider output{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}#forecast{background:#ffffffb3;border-radius:8px;padding:8px 10px;font-size:13.5px;line-height:1.55}.cta{background:var(--accent);color:#fff;border:0;border-radius:10px;width:100%;margin-bottom:10px;padding:12px;font-size:16px;font-weight:700}.charttitle{color:var(--muted);justify-content:space-between;margin:0 0 4px;font-size:12.5px;display:flex}canvas.chart{border:1px solid var(--line);background:#ffffffd1;border-radius:8px;width:100%;display:block}#legend{flex-wrap:wrap;gap:4px 12px;margin:6px 0 10px;font-size:12.5px;display:flex}#legend i{border-radius:50%;width:10px;height:10px;margin-right:4px;display:inline-block}#comparerows .row{cursor:pointer;grid-template-columns:44px 1fr;align-items:center;gap:6px;margin-bottom:4px;display:grid}#comparerows .row b{font-size:13px}#comparerows .row.on canvas{border-color:var(--ink);border-width:2px}table.peaks{border-collapse:collapse;width:100%;margin-bottom:10px;font-size:13.5px}table.peaks th,table.peaks td{text-align:left;border-bottom:1px solid var(--line);padding:5px 6px}table.peaks td.num{text-align:right;font-variant-numeric:tabular-nums}table.peaks i{border-radius:50%;width:10px;height:10px;margin-right:6px;display:inline-block}details.quiz{background:#ffffffb3;border-radius:8px;margin-bottom:6px;padding:8px 10px;font-size:14px}details.quiz summary{cursor:pointer;font-weight:600}details.quiz p{margin:6px 0 0;line-height:1.5}#panel footer{color:var(--muted);border-top:1px solid var(--line);padding:6px 16px 10px;font-size:11px}#nav{z-index:3;border-radius:14px;align-items:center;gap:8px;padding:8px;display:flex;position:fixed;bottom:12px;left:12px}#nav button{border:1px solid var(--line);color:var(--ink);background:#ffffffbf;border-radius:9px;padding:9px 12px;font-size:14px}#nav button.go{background:var(--accent);border-color:var(--accent);color:#fff;padding:9px 16px;font-weight:700}#nav button:disabled{opacity:.4;cursor:default}#parts{gap:4px;display:flex}#parts button{padding:9px 10px;font-size:13px}#parts button[aria-current=true]{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:700}#caption{max-width:min(760px, calc(100% - var(--panel-w) - 48px));z-index:3;border-radius:12px;padding:10px 16px;font-size:17px;font-weight:700;display:none;position:fixed;bottom:76px;left:12px}#partcard{z-index:3;border-radius:12px;max-width:320px;padding:10px 14px;font-size:14px;display:none;position:fixed;top:64px;left:12px}#partcard b{margin-bottom:2px;font-size:16px;display:block}@media (width<=900px){#panel{width:auto;height:42vh;inset:auto 8px 64px}#panel.closed{transform:translateY(calc(100% + 80px))}#toggle{width:44px;height:30px;top:auto;bottom:calc(42vh + 70px);translate:none;right:12px!important}#panel.closed+#toggle{bottom:70px}#nav{justify-content:space-between;right:12px}#parts{display:none}#caption{max-width:calc(100% - 24px);font-size:15px;bottom:calc(42vh + 76px)}}</style>
+  <script type="module" crossorigin src="./assets/index-BpfLW8eu.js"></script>
 </head>
 <body>
-<div id="app">
-  <div id="stage">
-    <div id="toolbar">
-      <button id="inject" class="primary">▶ 시료 주입</button>
-      <button id="xray" aria-pressed="false">해부 보기</button>
-      <button id="labels" aria-pressed="true">이름표</button>
-      <label>분해 <input id="explode" type="range" min="0" max="1" step="0.01" value="0"></label>
+<div id="stage"></div>
+<div id="toolbar">
+  <button id="inject" class="primary glass">▶ 시료 주입</button>
+  <button id="xray" class="glass" aria-pressed="false">해부 보기</button>
+  <button id="labels" class="glass" aria-pressed="true">이름표</button>
+  <label class="glass">분해 <input id="explode" type="range" min="0" max="1" step="0.01" value="0"></label>
+</div>
+<div id="partcard" class="glass"><b></b><span></span></div>
+<aside id="panel" class="glass">
+  <header>
+    <div id="crumb"></div>
+    <h2 id="title"></h2>
+  </header>
+  <div id="body">
+    <p class="role" id="role"></p>
+    <ul id="points"></ul>
+    <button class="cta" id="start">▶ 측정 시작</button>
+    <div class="block" id="methodbox">
+      <div class="slider"><span>오븐 온도</span><input id="oven" type="range" min="80" max="160" step="5" value="100"><output id="ovenv"></output></div>
+      <div class="slider"><span>운반기체 유량</span><input id="flow" type="range" min="0.5" max="2" step="0.1" value="1"><output id="flowv"></output></div>
+      <div class="slider"><span>분할비</span><input id="split" type="range" min="30" max="100" step="5" value="50"><output id="splitv"></output></div>
+      <div id="forecast"></div>
     </div>
-    <div id="partcard"><b></b><span></span></div>
-    <div id="hint">끌기: 돌려 보기 · 휠/두 손가락: 확대 · 부품 누르기: 설명</div>
-  </div>
-  <aside id="panel">
-    <header>
-      <h1>GC 3D 탐구 · 구성과 원리</h1>
-      <div id="steps"></div>
-    </header>
-    <div id="body">
-      <h2 id="title"></h2>
-      <p class="role" id="role"></p>
-      <ul id="points"></ul>
-      <div id="detbox">
-        <div id="dettabs"></div>
-        <div id="detinfo"></div>
-      </div>
-      <p class="charttitle"><span id="charttitle">크로마토그램</span><span id="clock"></span></p>
+    <div class="block" id="detbox">
+      <div class="tabs" id="dettabs"></div>
+      <div id="detinfo"></div>
+    </div>
+    <div id="chartbox">
+      <p class="charttitle"><span id="charttitle"></span><span id="clock"></span></p>
       <canvas class="chart" id="chart" width="700" height="230"></canvas>
       <div id="legend"></div>
-      <div id="compare">
-        <p class="charttitle"><span>같은 시료, 네 가지 검출기 비교 (눌러서 바꾸기)</span></p>
-        <div id="comparerows"></div>
-      </div>
-      <div class="question"><b>생각해 보기</b><span id="question"></span></div>
     </div>
-    <footer>외형: Agilent 7890B + 7693 사진(CC0)을 참고한 코드 생성 모델 · 내부 구조와 입자는 원리 설명용 모식도</footer>
-  </aside>
-</div>
+    <div id="peakbox"></div>
+    <div id="compare">
+      <p class="charttitle"><span>같은 시료, 네 가지 검출기 비교 (눌러서 바꾸기)</span></p>
+      <div id="comparerows"></div>
+    </div>
+    <div id="quizbox"></div>
+    <div class="question"><b>생각해 보기</b><span id="question"></span></div>
+  </div>
+  <footer>외형: Agilent 7890B + 7693 사진(CC0) 참고 모델 · 내부 구조·수치는 원리 설명용 모식</footer>
+</aside>
+<button id="toggle" class="glass" aria-label="설명 창 접기/펴기">▶</button>
+<div id="caption" class="glass"></div>
+<nav id="nav" class="glass">
+  <button id="prev">◀ 이전</button>
+  <div id="parts"></div>
+  <button id="next" class="go">다음 ▶</button>
+</nav>
 </body>
 </html>
